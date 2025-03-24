@@ -147,12 +147,19 @@ void setLogLevel(enum eDebugLogLevels debugLevel)
 }
 
 /**
- * @brief Logs a message at the specified debug level.
+ * @brief Logs a message at the specified debug level (or higher).
  */
 void LogMessage(enum eDebugLogLevels level, const char *format, ...)
 {
-    // Todo: Implement Debug Logger
-	// More detailed descriptions are in header file
+	if (level < currentDebugLevel || level >= N_DEBUG_LEVELS) return;	// exit if no message needs to be logged
+
+	char buffer[256];	// create a temporary buffer to hold the final formatted string
+	va_list args;
+	va_start(args, format);
+	vsnprintf(buffer, sizeof(buffer), format, args);
+	va_end(args);
+
+	SerialConsoleWriteString(buffer);
 }
 
 /*

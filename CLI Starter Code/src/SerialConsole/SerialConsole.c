@@ -227,7 +227,10 @@ static void configure_usart_callbacks(void)
  *****************************************************************************/
 void usart_read_callback(struct usart_module *const usart_module)
 {
-	// ToDo: Complete this function 
+	if(circular_buf_get(cbufRx, (uint8_t *)&latestRx) != -1) //Only continue if there are more characters to receive
+	{
+		usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1);
+	}
 }
 
 /**************************************************************************/ 

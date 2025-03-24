@@ -79,18 +79,55 @@ Version 4
 ![](2025-03-23-11-28-12.png)
 
 ## State Machine Flow Chart
+![](2025-03-23-16-20-42.png)
 
 
 # Part 2
 1. What does “InitializeSerialConsole()” do? In said function, what is “cbufRx” and “cbufTx”? What type of data structure is it? 
+
+    InitializeSerialConsole() initializes the UART and registers callback -- initializes circular buffers for Rx and Tx, configures USART and callbacks, and adds all other calls for initializing serial console.
+
+    cbufRx and cbufTx are both type: cbuf_handle_t 
+
 2. How are “cbufRx” and “cbufTx” initialized? Where is the library that defines them (please list the *C file they come from). 
+    
+    cbufRx and cbufTx are both initalized by functions hidden in the circular buffer library. The file is circular_buffer.c
+
 3. Where are the character arrays where the RX and TX characters are being stored at the end? Please mention their name and size.
     Tip: Please note cBufRx and cBufTx are structures. 
+
+    The RX characters are stored in the array rxCharacterBuffer, and TX characters are stored in txCharacterBuffer. 
+    Both arrays are 512 bytes. 
+
 4. Where are the interrupts for UART character received and UART character sent defined? 
+    
+    The interrupts for UART character received and transmitted are defined in in usart_interrupt.c file
+    
 5. What are the callback functions that are called when: 
+    
     A character is received? (RX) 
+        usart_read_callback(struct usart_module *const usart_module)
+
+
     A character has been sent? (TX) 
+        usart_write_callback(struct usart_module *const usart_module)
+            
 6. Explain what is being done on each of these two callbacks and how they relate to the cbufRx and cbufTx buffers. 
+    
+    The USART read callback takes each character in the USART and puts each character one by one into the buffer until there are no more chracters to read. The USART read callback is called when all characters are received successfully. 
+
+    The system takes each character in cbufTx and writes each character in the buffer of the desired message over the USART one by one by calling the function usart_write_buffer_job() until there are no more characters to transmit. The USART write callback is called when all characters are sent successfully. 
+
+
 7. Draw a diagram that explains the program flow for UART receive – starting with the user typing a character and ending with how that characters ends up in the circular buffer “cbufRx”. Please make reference to specific functions in the starter code. 
+
+    #### DO THIS QUESTION!
+
 8. Draw a diagram that explains the program flow for the UART transmission – starting from a string added by the program to the circular buffer “cbufTx” and ending on characters being shown on the screen of a PC (On Teraterm, for example). Please make reference to specific functions in the starter code. 
-9. What is done on the function “startStasks()” in main.c? How many threads are started?
+
+    #### DO THIS QUESTION!
+
+9. What is done on the function “startTasks()” in main.c? How many threads are started?
+
+    startTasks() initializes all of the application tasks in the function. 
+    In FreeRTOS, the number of threads created corresponds to the number of tasks that we are creating. In the example code (before we add code), only 1 task is being created so only 1 thread is being started.

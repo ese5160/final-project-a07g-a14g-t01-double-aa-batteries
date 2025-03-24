@@ -131,3 +131,15 @@ Version 4
 
     startTasks() initializes all of the application tasks in the function. 
     In FreeRTOS, the number of threads created corresponds to the number of tasks that we are creating. In the example code (before we add code), only 1 task is being created so only 1 thread is being started.
+
+# Part 3
+
+# Part 4
+
+### Questions
+1. What nets must you attach the logic analyzer to? (Check how the firmware sets up the UART in SerialConsole.c!)
+
+    8N1
+    
+2. Where on the circuit board can you attach / solder to?
+3. What are critical settings for the logic analyzer?

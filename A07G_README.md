@@ -143,3 +143,7 @@ Version 1
 2. Where on the circuit board can you attach / solder to?
 3. What are critical settings for the logic analyzer?
    Critical settings for the logic analyzer include baud rate, number of bits sent per character, parity bit (for error checking), stop bits (to signal the end of a character)), idle state, voltage, and sampling rate. These settings are important for the logic analyzer to know how to read the serial data.
+
+   ![](images/saleae_1.png)
+   ![](images/saleae_2.png)
+

@@ -128,6 +128,6 @@ Version 4
     #### DO THIS QUESTION!
 
 9. What is done on the function “startTasks()” in main.c? How many threads are started?
+
     startTasks() initializes all of the application tasks in the function. 
-    
-    #### FINISH THIS QUESTION!
+    In FreeRTOS, the number of threads created corresponds to the number of tasks that we are creating. In the example code (before we add code), only 1 task is being created so only 1 thread is being started.

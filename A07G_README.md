@@ -165,4 +165,10 @@ committed in [SerialConsole.c](CLI Starter Code/src/SerialConsole/SerialConsole.
 
 # Part 5
 
-committed in [SerialConsole.c]() and [CliThread.c]()
+committed in [SerialConsole.c](CLI Starter Code/src/SerialConsole/SerialConsole.c) and [CliThread.c](CLI Starter Code/src/CliThread/CliThread.c)
+
+# Part 6
+
+committed in [CliThread.c](CLI Starter Code/src/CliThread/CliThread.c)
+
+[link to demo video](https://drive.google.com/file/d/1TgtXLox8CdQVJe7-FM5-kcwuPG_pjfQm/view?usp=sharing)

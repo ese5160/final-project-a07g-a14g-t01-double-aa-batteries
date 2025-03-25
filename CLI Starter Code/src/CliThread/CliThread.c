@@ -37,13 +37,15 @@ static const CLI_Command_Definition_t xResetCommand =
         (const pdCOMMAND_LINE_CALLBACK)CLI_ResetDevice,
         0};
 
+// Version Command       
 static const CLI_Command_Definition_t xVersion =
 	{
 		"version",
 		"version: Displays the firmware version \r\n",
 		(const pdCOMMAND_LINE_CALLBACK)CLI_GetVersion,
 		0};
-		
+
+// Ticks Command
 static const CLI_Command_Definition_t xTicks =
 	{
 		"ticks",
@@ -267,12 +269,22 @@ BaseType_t CLI_ResetDevice(int8_t *pcWriteBuffer, size_t xWriteBufferLen, const 
     return pdFALSE;
 }
 
+/**
+ * @brief Prints firmware version.
+ *
+ * @return pdFALSE
+ */
 BaseType_t CLI_GetVersion(int8_t *pcWriteBuffer, size_t xWriteBufferLen, const int8_t *pcCommandString)
 {
 	snprintf((char*) pcWriteBuffer, xWriteBufferLen, "Firmware Version: %s\r\n", Firmware_Version);
 	return pdFALSE;
 }
 
+/**
+ * @brief Prints current tick count.
+ *
+ * @return pdFALSE
+ */
 BaseType_t CLI_GetTicks(int8_t *pcWriteBuffer, size_t xWriteBufferLen, const int8_t *pcCommandString)
 {
 	snprintf((char*) pcWriteBuffer, xWriteBufferLen, "Ticks: %lu\r\n", xTaskGetTickCount());

@@ -117,7 +117,7 @@ Version 1
    usart_write_callback(struct usart_module *const usart_module)
 6. Explain what is being done on each of these two callbacks and how they relate to the cbufRx and cbufTx buffers.
 
-   The USART read callback takes each character in the USART and puts each character one by one into the buffer until there are no more chracters to read. The USART read callback is called when all characters are received successfully.
+   The USART read callback is called when a character is received, and stores the chracter in a ring buffer and notifies the CLI thread that a new character is available. 
 
    The system takes each character in cbufTx and writes each character in the buffer of the desired message over the USART one by one by calling the function usart_write_buffer_job() until there are no more characters to transmit. The USART write callback is called when all characters are sent successfully.
 7. Draw a diagram that explains the program flow for UART receive – starting with the user typing a character and ending with how that characters ends up in the circular buffer “cbufRx”. Please make reference to specific functions in the starter code.
@@ -150,6 +150,18 @@ Version 1
    
    Critical settings for the logic analyzer include baud rate, number of bits sent per character, parity bit (for error checking), stop bits (to signal the end of a character), idle state, voltage, and sampling rate. These settings are important for the logic analyzer to know how to read the serial data.
 
-   ![](images/saleae_1.png)
-   ![](images/saleae_2.png)
+### Hardware Connections
 
+![](images/saleae_1.png)
+![](images/saleae_2.png)
+
+### Decoded Message
+
+![](2025-03-24-20-16-41.png)
+    
+### .SAL file
+
+[Link](ESE5160_A07G_Part4_Wiretap.sal)
+
+
+# Part 5

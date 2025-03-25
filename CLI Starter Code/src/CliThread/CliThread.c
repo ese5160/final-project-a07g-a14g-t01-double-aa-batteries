@@ -10,11 +10,12 @@
  * Includes
  ******************************************************************************/
 #include "CliThread.h"
+#include "semphr.h"
 
 /******************************************************************************
  * Defines
  ******************************************************************************/
-
+#define Firmware_Version "0.0.1"
 /******************************************************************************
  * Variables
  ******************************************************************************/
@@ -36,6 +37,20 @@ static const CLI_Command_Definition_t xResetCommand =
         (const pdCOMMAND_LINE_CALLBACK)CLI_ResetDevice,
         0};
 
+static const CLI_Command_Definition_t xVersion =
+	{
+		"version",
+		"version: Displays the firmware version \r\n",
+		(const pdCOMMAND_LINE_CALLBACK)CLI_GetVersion,
+		0};
+		
+static const CLI_Command_Definition_t xTicks =
+	{
+		"ticks",
+		"ticks: Displays number of ticks since startup \r\n",
+		(const pdCOMMAND_LINE_CALLBACK)CLI_GetTicks,
+		0};
+
 /******************************************************************************
  * Forward Declarations
  ******************************************************************************/
@@ -43,7 +58,7 @@ static void FreeRTOS_read(char *character);
 /******************************************************************************
  * Callback Functions
  ******************************************************************************/
-
+SemaphoreHandle_t xRxSemaphore;
 /******************************************************************************
  * CLI Thread
  ******************************************************************************/
@@ -54,6 +69,8 @@ void vCommandConsoleTask(void *pvParameters)
 
     FreeRTOS_CLIRegisterCommand(&xClearScreen);
     FreeRTOS_CLIRegisterCommand(&xResetCommand);
+	FreeRTOS_CLIRegisterCommand(&xVersion);
+	FreeRTOS_CLIRegisterCommand(&xTicks);
 
     uint8_t cRxedChar[2], cInputIndex = 0;
     BaseType_t xMoreDataToFollow;
@@ -65,7 +82,8 @@ void vCommandConsoleTask(void *pvParameters)
     static uint8_t pcEscapeCodePos = 0;
 
     // Any semaphores/mutexes/etc you needed to be initialized, you can do them here
-
+	xRxSemaphore = xSemaphoreCreateBinary();
+	
     /* This code assumes the peripheral being used as the console has already
     been opened and configured, and is passed into the task as the task
     parameter.  Cast the task parameter to the correct type. */
@@ -216,8 +234,14 @@ void vCommandConsoleTask(void *pvParameters)
  *****************************************************************************/
 static void FreeRTOS_read(char *character)
 {
-    // ToDo: Complete this function
-    vTaskSuspend(NULL); // We suspend ourselves. Please remove this when doing your code
+    //wait (block) until ISR signals a character is ready
+	if(xRxSemaphore != NULL){
+		//wait forever until a character is received
+		xSemaphoreTake(xRxSemaphore, portMAX_DELAY);
+		
+		//Once signaled, read from the circular buffer
+		SerialConsoleReadCharacter((uint8_t *)character);
+	}
 }
 
 /******************************************************************************
@@ -241,4 +265,16 @@ BaseType_t CLI_ResetDevice(int8_t *pcWriteBuffer, size_t xWriteBufferLen, const 
 {
     system_reset();
     return pdFALSE;
+}
+
+BaseType_t CLI_GetVersion(int8_t *pcWriteBuffer, size_t xWriteBufferLen, const int8_t *pcCommandString)
+{
+	snprintf((char*) pcWriteBuffer, xWriteBufferLen, "Firmware Version: %s\r\n", Firmware_Version);
+	return pdFALSE;
+}
+
+BaseType_t CLI_GetTicks(int8_t *pcWriteBuffer, size_t xWriteBufferLen, const int8_t *pcCommandString)
+{
+	snprintf((char*) pcWriteBuffer, xWriteBufferLen, "Ticks: %lu\r\n", xTaskGetTickCount());
+	return pdFALSE;
 }

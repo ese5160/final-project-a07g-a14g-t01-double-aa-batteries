@@ -27,6 +27,8 @@
  * Includes
  ******************************************************************************/
 #include "SerialConsole.h"
+#include "CliThread.h"
+
 
 /******************************************************************************
  * Defines
@@ -227,8 +229,17 @@ static void configure_usart_callbacks(void)
  *****************************************************************************/
 void usart_read_callback(struct usart_module *const usart_module)
 {
-	circular_buf_put(cbufRx, latestRx); // store the received character
-    usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1); // start next read
+	circular_buf_put(cbufRx, latestRx); // store the received character in circular buffer
+	
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+	xSemaphoreGiveFromISR(xRxSemaphore, &xHigherPriorityTaskWoken);
+	
+	//start next read
+	usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1);
+	
+	//If CLI task is of higher priority, yield
+	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+	
 }
 
 /**************************************************************************/ 

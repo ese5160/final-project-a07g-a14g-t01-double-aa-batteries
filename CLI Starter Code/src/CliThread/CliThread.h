@@ -11,7 +11,9 @@
 #include "asf.h"
 #include "SerialConsole.h"
 #include "FreeRTOS_CLI.h"
+#include "semphr.h"
 
+extern SemaphoreHandle_t xRxSemaphore;
 
 #define CLI_TASK_SIZE	256		///<STUDENT FILL
 #define CLI_PRIORITY (configMAX_PRIORITIES - 1) ///<STUDENT FILL
@@ -48,3 +50,5 @@ BaseType_t CLI_NeotrellProcessButtonBuffer( int8_t *pcWriteBuffer,size_t xWriteB
 BaseType_t CLI_DistanceSensorGetDistance( int8_t *pcWriteBuffer,size_t xWriteBufferLen,const int8_t *pcCommandString );
 BaseType_t CLI_ResetDevice( int8_t *pcWriteBuffer,size_t xWriteBufferLen,const int8_t *pcCommandString );
 BaseType_t CLI_SendDummyGameData( int8_t *pcWriteBuffer,size_t xWriteBufferLen,const int8_t *pcCommandString );
+BaseType_t CLI_GetVersion( int8_t *pcWriteBuffer,size_t xWriteBufferLen,const int8_t *pcCommandString );
+BaseType_t CLI_GetTicks( int8_t *pcWriteBuffer,size_t xWriteBufferLen,const int8_t *pcCommandString );

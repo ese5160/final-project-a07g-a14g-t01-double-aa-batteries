@@ -139,7 +139,11 @@ Version 4
 ### Questions
 1. What nets must you attach the logic analyzer to? (Check how the firmware sets up the UART in SerialConsole.c!)
 
-    We should connect the logic analyzer to nets: TX (Pin PA08), RX (Pin PA09), and GND. 
+    We should connect the logic analyzer to nets: TX (USART_TX), RX (USART_RX), and GND. 
 
 2. Where on the circuit board can you attach / solder to?
+
+    TX is connected to PAD2 and Pin PB10, so you can attach the logic analyzer to pin PA08 or solder to PAD0
+    RX is connected to PAD3 and Pin PB11, so you can attach the logic analyzer to pin PA09 or solder to PAD1
+
 3. What are critical settings for the logic analyzer?

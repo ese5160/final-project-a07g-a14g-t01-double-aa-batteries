@@ -117,7 +117,7 @@ Version 1
    usart_write_callback(struct usart_module *const usart_module)
 6. Explain what is being done on each of these two callbacks and how they relate to the cbufRx and cbufTx buffers.
 
-   The USART read callback is called when a character is received, and stores the chracter in a ring buffer and notifies the CLI thread that a new character is available. 
+   The USART read callback is called when a character is received, and stores the chracter in a ring buffer and notifies the CLI thread that a new character is available.
 
    The system takes each character in cbufTx and writes each character in the buffer of the desired message over the USART one by one by calling the function usart_write_buffer_job() until there are no more characters to transmit. The USART write callback is called when all characters are sent successfully.
 7. Draw a diagram that explains the program flow for UART receive – starting with the user typing a character and ending with how that characters ends up in the circular buffer “cbufRx”. Please make reference to specific functions in the starter code.
@@ -133,21 +133,21 @@ Version 1
 
 # Part 3
 
+committed in [SerialConsole.c](CLI Starter Code/src/SerialConsole/SerialConsole.c)
+
 # Part 4
 
 ### Questions
 
 1. What nets must you attach the logic analyzer to? (Check how the firmware sets up the UART in SerialConsole.c!)
 
-    We should connect the logic analyzer to nets: TX (USART_TX), RX (USART_RX), and GND. 
-
+   We should connect the logic analyzer to nets: TX (USART_TX), RX (USART_RX), and GND.
 2. Where on the circuit board can you attach / solder to?
 
-    TX is connected to PAD2 and Pin PB10, so you can attach the logic analyzer to pin PA08 or solder to PAD0
-    RX is connected to PAD3 and Pin PB11, so you can attach the logic analyzer to pin PA09 or solder to PAD1
-
+   TX is connected to PAD2 and Pin PB10, so you can attach the logic analyzer to pin PA08 or solder to PAD0
+   RX is connected to PAD3 and Pin PB11, so you can attach the logic analyzer to pin PA09 or solder to PAD1
 3. What are critical settings for the logic analyzer?
-   
+
    Critical settings for the logic analyzer include baud rate, number of bits sent per character, parity bit (for error checking), stop bits (to signal the end of a character), idle state, voltage, and sampling rate. These settings are important for the logic analyzer to know how to read the serial data.
 
 ### Hardware Connections
@@ -158,10 +158,11 @@ Version 1
 ### Decoded Message
 
 ![](2025-03-24-20-16-41.png)
-    
+
 ### .SAL file
 
 [Link](ESE5160_A07G_Part4_Wiretap.sal)
 
-
 # Part 5
+
+committed in [SerialConsole.c]() and [CliThread.c]()

@@ -150,18 +150,28 @@ void setLogLevel(enum eDebugLogLevels debugLevel)
 
 /**
  * @brief Logs a message at the specified debug level (or higher).
+ *
+ * This function formats and outputs a message to the serial console if the specified
+ * debug level is greater than or equal to the current debug level and is a valid level.
+ * It uses variadic arguments similar to printf.
+ *
+ * @param level  The debug level of the message. Must be >= currentDebugLevel and < N_DEBUG_LEVELS.
+ * @param format The format string, following printf-style formatting.
+ * @param ...    Additional arguments to be formatted into the message string.
  */
 void LogMessage(enum eDebugLogLevels level, const char *format, ...)
 {
-	if (level < currentDebugLevel || level >= N_DEBUG_LEVELS) return;	// exit if no message needs to be logged
+    // Exit early if the message's level is below the current threshold or invalid
+    if (level < currentDebugLevel || level >= N_DEBUG_LEVELS) return;
 
-	char buffer[256];	// create a temporary buffer to hold the final formatted string
-	va_list args;
-	va_start(args, format);
-	vsnprintf(buffer, sizeof(buffer), format, args);
-	va_end(args);
+    char buffer[256];  ///< Temporary buffer to store the formatted message
 
-	SerialConsoleWriteString(buffer);
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, sizeof(buffer), format, args);  // Format the message
+    va_end(args);
+
+    SerialConsoleWriteString(buffer);  // Output the formatted string to the serial console
 }
 
 /*
